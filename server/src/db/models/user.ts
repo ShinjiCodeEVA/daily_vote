@@ -38,6 +38,8 @@ class User {
                                      WHERE user_id = ?`
 
                 const result = await db.query<UserModel>(queryString, [userId]);
+                // console.log(result[0])
+                
                 resolve(result);
 
             } catch(error) {
