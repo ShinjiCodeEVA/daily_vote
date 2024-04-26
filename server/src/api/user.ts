@@ -33,8 +33,8 @@ async function getUsers(req: Request, res: Response) {
         const users = await User.getAll();
         res.status(200).json(response.onSuccess("Users found", users));
 
-    } catch(error) {
-        res.status(500).json(response.error("Failed to fetch user/s"));
+    } catch(error:any) {
+        res.status(500).json(response.error(error.message));
     }
 }
 
@@ -50,7 +50,7 @@ async function insertUser(req: Request, res: Response) {
         const result = await User.insert(user);
         res.status(200).json(response.onSuccess("Student inserted", [result]))
 
-    } catch(error) {
-        res.status(500).json(response.error("Failed to insert user"));
+    } catch(error: any) {
+        res.status(500).json(response.error(error.message));
     }
 }
