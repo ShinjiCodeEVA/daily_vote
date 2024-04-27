@@ -2,6 +2,7 @@ import user from "../api/user.js";
 import poll from "../api/poll.js";
 import vote from "../api/vote.js";
 import comment from "../api/comment.js";
+import { auth } from "../api/middleware/auth.js";
 import { AppRoute } from "../types/index.js";
 
 export const routes: AppRoute[] = [
@@ -16,4 +17,7 @@ export const routes: AppRoute[] = [
 
     {path: '/comment', methods: ["POST"], handler: comment},
     {path: '/comment/:pollId', methods: ["GET"], handler: comment},
+
+    {path: '/auth/token', methods: ["GET"], handler: auth},
+    {path: '/auth/user', methods: ["GET"], handler: auth},
 ]
