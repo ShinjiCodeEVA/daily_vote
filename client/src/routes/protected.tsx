@@ -1,5 +1,7 @@
 import { CreatePollPage } from "../pages/CreatePoll"
+import { VotePage } from "../pages/Vote"
 
 export const protectedRoutes = [
-    {path: '/createPoll', element: <CreatePollPage/>}
+    {path: '/create', element: <CreatePollPage/>},
+    {path: '/vote', element: <VotePage/>}
 ]
