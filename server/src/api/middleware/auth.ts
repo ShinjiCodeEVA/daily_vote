@@ -1,14 +1,15 @@
 import { Response, Request } from "express";
 import { response } from "../../types/response.js";
+import { AuthEndpoints } from "../../types/enums.js";
 import fetch from 'node-fetch';
 
 export function auth(req: Request, res: Response): Promise<void> | undefined {
-    const path = req.path.substring(req.path.lastIndexOf('/d'));
+    const path = req.path.substring(req.path.lastIndexOf('/'));
     
     switch (path) { 
-        case "/token":
+        case AuthEndpoints.GET_ACCESS_TOKEN:
             return getAccessToken(req, res);
-        case "/user":
+        case AuthEndpoints.GET_USER_DATA:
             return getUserData(req, res);
     }
 }
