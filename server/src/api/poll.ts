@@ -21,7 +21,8 @@ export default function poll(req: Request, res: Response): Promise<void> | undef
 async function getPolls(req: Request, res: Response) {
     try { 
         const pollIdParam = req.params.pollId;
-
+        const state = req.query.state?.toString() || "";
+        
         // if get poll by id
         if (pollIdParam) { 
            const poll = await Poll.findOne(parseInt(pollIdParam));
@@ -29,8 +30,8 @@ async function getPolls(req: Request, res: Response) {
            return;
         }
 
-        // if get all polls 
-        const polls = await Poll.getAll();
+        // if get polls base on state 
+        const polls = await Poll.getAll(state);
         const transFormPoll = polls.map((poll) => snakeToCamel(poll))
         res.status(200).json(response.onSuccess("Polls found", transFormPoll));
 

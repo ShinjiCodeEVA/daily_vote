@@ -4,12 +4,13 @@ export type UserModel = {
     userId?: number;
     accessToken: string;
     username: string; 
+    userProfile: string;
     [key: number | string]: unknown;
 }
 
 export type PollModel = {
     pollId?: number;
-    userId: number;
+    user: UserModel;
     pollName: string;
     choices: ChoiceModel[];
     createdAt: Date;

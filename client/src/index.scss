@@ -1,3 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body { 
+    @apply bg-black-400;
+}
+
+.btn-default {
+    @apply py-2  px-4 flex items-center text-sm font-semibold gap-2 rounded-md;
+}
+
+.btn-login-dark { 
+    @apply bg-black-400 border-2 text-white  border-white hover:border-green-400;
+}
+
+.btn-login-yellow { 
+    @apply bg-yellow-400 text-black
+}
+
+.btn-poll-expired {
+    @apply bg-yellow-400 text-black rounded-full text-xs py-1 mt-2;
+}

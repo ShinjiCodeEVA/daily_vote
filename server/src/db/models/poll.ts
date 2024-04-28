@@ -1,5 +1,6 @@
 import { ResultSetHeader } from "mysql2";
 import { PollModel } from "../../types/models.js";
+import { PollState } from "../../types/enums.js";
 import Database from "../index.js";
 
 
@@ -9,20 +10,30 @@ class Poll {
      * GET all polls 
      * @returns PollModel[]
      */
-    public static getAll(): Promise<PollModel[]> {
+    public static getAll(state: string): Promise<PollModel[]> {
         return new Promise(async (resolve, reject) => { 
             const db = Database.getInstance();
 
             try {
-                const queryString = `SELECT
+                let queryString = `SELECT
                                          p.*,
-                                         JSON_ARRAYAGG(JSON_OBJECT('choiceId', c.choice_id, 'choiceName', c.choice_name)) AS choices
+                                         JSON_ARRAYAGG(JSON_OBJECT('choiceId', c.choice_id, 'choiceName', c.choice_name)) AS choices,
+                                         JSON_OBJECT('user_id', u.user_id, 'access_token', u.access_token, 'username', u.username, 'user_profile', u.user_profile) AS user
                                      FROM
                                          polls p
                                      LEFT JOIN
                                          choices c ON p.poll_id = c.poll_id
+                                     LEFT JOIN 
+                                         users as u ON (p.user_id = u.user_id) 
                                      GROUP BY
-                                         p.poll_id, p.poll_name`;
+                                         p.poll_id`;
+
+                // check if active polls
+                if (state === PollState.ACTIVE) { 
+                    queryString += ` HAVING p.expiration_date > NOW()`
+                } else if (state === PollState.EXPIRED) { 
+                    queryString += ` HAVING p.expiration_date < NOW()`
+                }                                    
 
                 const polls = await db.query<PollModel[]>(queryString, []);
                 resolve(polls);
@@ -45,10 +56,13 @@ class Poll {
             try {
                 const queryString = `SELECT 
                                          p.*,
-                                         JSON_ARRAYAGG(JSON_OBJECT('choiceId', c.choice_id, 'choiceName', c.choice_name)) as choices
+                                         JSON_ARRAYAGG(JSON_OBJECT('choiceId', c.choice_id, 'choiceName', c.choice_name)) as choices,
+                                         JSON_OBJECT('user_id', u.user_id, 'access_token', u.access_token, 'username', u.username, 'user_profile', u.user_profile) as user
                                      FROM polls p
                                      LEFT JOIN 
-                                        choices as c ON (p.poll_id = c.poll_id) 
+                                        choices as c ON (p.poll_id = c.poll_id)
+                                     LEFT JOIN 
+                                        users as u ON (p.user_id = u.user_id) 
                                      WHERE 
                                         p.poll_id = (?)
                                      GROUP BY 
