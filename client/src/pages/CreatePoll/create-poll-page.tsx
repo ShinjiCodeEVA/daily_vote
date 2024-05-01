@@ -1,9 +1,9 @@
-import { Form } from "../../components/Form/CreatePollForm"
+import { PollCreation } from "../../features/polls/PollCreation"
 
 export const CreatePollPage = () => {
   return (
     <div>
-        <Form handleSubmit={() =>""}/>
+        <PollCreation />
     </div>
   )
 }

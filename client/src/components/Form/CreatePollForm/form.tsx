@@ -10,8 +10,8 @@ const initialPoll: PollType = {
   pollName: "",
   description: "",
   choices: [],
-  createdAt: new Date(),
-  expirationDate: new Date(),
+  createdAt: new Date().toISOString().slice(0, 19).replace("T", " "), 
+  expirationDate: new Date().toISOString().slice(0, 19).replace("T", " "), 
 };
 
 
@@ -24,6 +24,12 @@ export const Form = ({handleSubmit}: FormProp) => {
     e.preventDefault();
     handleSubmit(pollData);
   }
+
+  const handleFormKeyDown = (e:React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
 
   const handlePollTitle = (value: string) => {
     setPollData((prevState) => ({...prevState, pollName: value}))
@@ -62,7 +68,8 @@ export const Form = ({handleSubmit}: FormProp) => {
 };
 
   return ( 
-    <form onSubmit={handleFormSubmit}
+    <form
+    onKeyDown={handleFormKeyDown}
     className="w-full flex flex-col items-center gap-10 px-36 mt-12">
         <Head 
         text="Title"
@@ -120,6 +127,7 @@ export const Form = ({handleSubmit}: FormProp) => {
         </Head>
 
         <Button 
+          onClick={handleFormSubmit}
           type="submit"
           className="w-full bg-yellow-400 rounded-md py-2">
           Create

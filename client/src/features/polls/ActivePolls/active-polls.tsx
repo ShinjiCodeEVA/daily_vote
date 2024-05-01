@@ -8,8 +8,6 @@ export const ActivePolls = () => {
 
   const {data} = getActivePolls();
 
-  console.log(data)
-
   return (
     <div >
         <div className="flex items-center gap-2 mt-10">

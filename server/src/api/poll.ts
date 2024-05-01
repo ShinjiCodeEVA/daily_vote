@@ -32,7 +32,13 @@ async function getPolls(req: Request, res: Response) {
 
         // if get polls base on state 
         const polls = await Poll.getAll(state);
-        const transFormPoll = polls.map((poll) => snakeToCamel(poll))
+        let transFormPoll = polls.map((poll) => {
+            let pollItem = snakeToCamel(poll);
+            pollItem.user =  snakeToCamel(pollItem.user);
+
+            return pollItem;
+        })
+        
         res.status(200).json(response.onSuccess("Polls found", transFormPoll));
 
     } catch(error: any) {
@@ -52,7 +58,7 @@ async function insertPoll(req: Request, res: Response) {
         const result = await Poll.insert(poll);
         res.status(200).json(response.onSuccess("Poll inserted", result))
 
-    } catch(error) {
-        res.status(500).json(response.error("Failed to insert poll"));
+    } catch(error: any) {
+        res.status(500).json(response.error(error.message));
     }
 }

@@ -5,9 +5,8 @@ import { ActiveCrums } from "../components/ActiveCrumbs";
 
 export const VotingPoll = () => {
 
-
-    const currentDate = new Date();
-    const targetDate = new Date(currentDate.setDate(currentDate.getDate() + 3));
+  const currentDate = new Date();
+  const targetDate = new Date(currentDate.setDate(currentDate.getDate() + 3));
 
   return (
     <div className="w-full mt-3">

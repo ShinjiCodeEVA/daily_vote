@@ -8,7 +8,7 @@ export const PastPolls = () => {
 
   const {data} = getExpiredPolls();
 
-  console.log(data)
+
 
   return (
     <div>

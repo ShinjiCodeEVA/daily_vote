@@ -15,8 +15,11 @@ const cls = [
 export const Poll = ({poll, active}: PollProp) => {
   const {user}= poll;
 
-  return (
-    <div className="w-full">
+  console.log(user)
+
+  return (<>
+    {poll && user && 
+      <div className="w-full">
       <div className="relative p-[1px]">
         <div className="transition-transform hover:translate-x-3 hover:translate-y-3 relative rounded-md w-full bg-gray-600 py-4 px-5 z-10
                        ">
@@ -25,7 +28,7 @@ export const Poll = ({poll, active}: PollProp) => {
         </Icon>
           <div className="flex items-center gap-2">
           <img 
-            src={user.userProfile} 
+            src={user?.userProfile} 
             alt="profile"
             className="object-cover max-w-[40px] rounded-full border-2 border-green-400"/>
             <Head text={user.username} className="text-sm" />
@@ -34,7 +37,7 @@ export const Poll = ({poll, active}: PollProp) => {
               text={poll.pollName}
               className="text-xl font-semibold mt-3" />
           {active ?
-            <p className="text-gray-400 text-sm mt-3">Until {formatDate(poll.expirationDate.toString())}</p>
+            <p className="text-gray-400 text-sm mt-3">Until {formatDate(poll?.expirationDate?.toString() ?? "")}</p>
           : <Button variant="btn-poll-expired">Expired</Button>}
         </div>
         <div
@@ -42,6 +45,6 @@ export const Poll = ({poll, active}: PollProp) => {
           className={`border h-full  rounded-md w-full absolute top-3 left-3 z-0`}></div>
       
       </div>
-    </div>
-  );
+    </div>}
+    </>);
 };

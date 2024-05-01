@@ -22,12 +22,28 @@ export default function user(req: Request, res: Response): Promise<void> | undef
 async function getUsers(req: Request, res: Response) {
     try { 
         const userIdParam = req.params.userId;
+        const username = req.query.username;
 
         // if get user by id
         if (userIdParam) { 
             const user = await User.findOne(parseInt(userIdParam));
+            if (!user) {
+                res.status(404).json(response.error("User not found"));
+                return;
+            }
             res.status(200).json(response.onSuccess("User found", snakeToCamel(user[0])));
             return;
+        }
+
+        // if get user by username
+        if (username) { 
+            const user = await User.findOne(username.toString());
+            if (user.length === 0) { 
+                res.status(404).json(response.error("User not found"));
+                return;
+            }
+            res.status(200).json(response.onSuccess("User found", snakeToCamel(user[0])));
+            return; 
         }
 
         // if get all users 
@@ -39,6 +55,7 @@ async function getUsers(req: Request, res: Response) {
         res.status(500).json(response.error(error.message));
     }
 }
+
 
 /**
  * INSERT a user

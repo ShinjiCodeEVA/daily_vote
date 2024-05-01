@@ -29,16 +29,15 @@ class User {
      * @param userId 
      * @returns UserModel
      */
-    public static findOne(userId: number): Promise<UserModel> { 
+    public static findOne(user: number | string): Promise<UserModel> { 
         return new Promise(async (resolve, reject) => { 
             const db = Database.getInstance();
 
             try { 
                 const queryString = `SELECT * FROM users 
-                                     WHERE user_id = ?`
+                                     WHERE user_id = ? OR username = ?`
 
-                const result = await db.query<UserModel>(queryString, [userId]);
-                // console.log(result[0])
+                const result = await db.query<UserModel>(queryString, [user, user]);
                 
                 resolve(result);
 
@@ -59,8 +58,9 @@ class User {
             
             try { 
                 const error = User.validate(user)
-                if (error)  
-                    reject(error);
+                if (error) {
+                    return reject(error);
+                }
 
                 const {accessToken, username} = user;
                     

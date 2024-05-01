@@ -108,7 +108,7 @@ class Poll {
                     await db.query(
                         `INSERT INTO choices (poll_id, choice_name)
                          VALUES (?, ?)`
-                    , [pollId, choice]);
+                    , [pollId, choice.choiceName]);
                 }
                 
                 resolve();

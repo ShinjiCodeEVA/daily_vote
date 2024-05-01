@@ -15,7 +15,7 @@ export const routes: AppRoute[] = [
     {path: '/vote', methods: ["GET", "POST"], handler: vote},
     {path: '/vote/:voteId', methods: ["GET"], handler: vote},
 
-    {path: '/comment', methods: ["POST"], handler: comment},
+    {path: '/comment', methods: ["GET", "POST"], handler: comment},
     {path: '/comment/:pollId', methods: ["GET"], handler: comment},
 
     {path: '/auth/token', methods: ["GET"], handler: auth},

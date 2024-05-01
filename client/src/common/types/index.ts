@@ -13,8 +13,8 @@ export type PollType = {
     pollName: string;
     description: string;
     choices: ChoiceType[];
-    createdAt?: Date;
-    expirationDate?: Date;  
+    createdAt?: Date | string;
+    expirationDate?: Date | string;  
     [key: number | string]: unknown;
 }
 
