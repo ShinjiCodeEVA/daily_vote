@@ -3,6 +3,7 @@ import { Head } from "../../../components/Elements/Head";
 import { Button } from "../../../components/Elements";
 import { Icon } from "../../../components/Elements";
 import { formatDate } from "../../../utils";
+import { useNavigate } from "react-router-dom";
 
 const stickers = ["🔔", "👽", "🌟", "🌌", "🗽", "⛩️"]
 
@@ -14,12 +15,15 @@ const cls = [
 
 export const Poll = ({poll, active}: PollProp) => {
   const {user}= poll;
+  const navigate = useNavigate();
 
-  console.log(user)
+  const onNavigate = () => { 
+    navigate(`/vote/${poll.pollId}`)
+  }
 
   return (<>
     {poll && user && 
-      <div className="w-full">
+      <div className="w-full cursor-pointer" onClick={onNavigate}>
       <div className="relative p-[1px]">
         <div className="transition-transform hover:translate-x-3 hover:translate-y-3 relative rounded-md w-full bg-gray-600 py-4 px-5 z-10
                        ">

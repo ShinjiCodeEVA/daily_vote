@@ -56,7 +56,11 @@ class Poll {
             try {
                 const queryString = `SELECT 
                                          p.*,
-                                         JSON_ARRAYAGG(JSON_OBJECT('choiceId', c.choice_id, 'choiceName', c.choice_name)) as choices,
+                                         JSON_ARRAYAGG(JSON_OBJECT(
+                                            'choiceId', c.choice_id, 
+                                            'choiceName', c.choice_name, 
+                                            'voteCount', (SELECT COUNT(*) FROM votes AS v 
+                                                           WHERE c.choice_id = v.choice_id) )) AS choices,
                                          JSON_OBJECT('user_id', u.user_id, 'access_token', u.access_token, 'username', u.username, 'user_profile', u.user_profile) as user
                                      FROM polls p
                                      LEFT JOIN 

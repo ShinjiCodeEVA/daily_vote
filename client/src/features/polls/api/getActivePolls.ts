@@ -4,7 +4,6 @@ import { axios } from "../../../lib/axios";
 
 const fetchActivePolls = async () => await axios.get('/api/poll?state=active');
 
-
 export const getActivePolls = () => { 
     return useQuery({
         queryKey: ["active-polls"],

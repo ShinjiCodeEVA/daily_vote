@@ -1,3 +1,4 @@
+import { LoginBtnProp } from "./login-btn.interface";
 import { useEffect } from "react";
 import { Button } from "../../../../components/Elements"
 import { GITHUB_AUTHORIZE_URL } from "../../../../config";
@@ -15,7 +16,7 @@ const loginWithGithub = () => {
   window.location.assign(GITHUB_AUTHORIZE_URL);
 }
 
-export const LoginBtn = () => {
+export const LoginBtn = ({variant, text}: LoginBtnProp) => {
 
   const {value: accessToken, setValue: setAccessToken} = useLocalStorage("access_token", null);
   const {mutate} = userLogin(setAccessToken);
@@ -74,9 +75,9 @@ export const LoginBtn = () => {
       className="w-[50px] h-[50px] rounded-full border-2 border-green-400"/> : 
     <Button 
       onClick={loginWithGithub}
-      variant="btn-login-dark"
+      variant={variant}
       icon={true}>
-      Login
+      {text}
     </Button>}
     
     </>

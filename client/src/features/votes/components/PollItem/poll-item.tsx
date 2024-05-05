@@ -1,19 +1,31 @@
 import { PollItemProp } from "./poll-item.interface";
+import { useEffect, useState } from "react";
+import { useHover } from "../../../../hooks/useHover";
 
 export const PollItem = ({voteCount, pollName}: PollItemProp) => {
   
-  const width = voteCount * 10 * 2+ "%";
+  const [width, setWidth] = useState<string>();
+  const {ref, isHovered} = useHover();
+
+  useEffect(() => { 
+    setWidth(`${voteCount * 10 * 2}%`)
+  }, [voteCount])
+
+
 
   return (
     <div className="text-white">
-      <div className="flex items-center">
+      <div className="flex items-center gap-8">
         <div className="w-40">{pollName}</div>
-        <div className="w-[100%] flex items-center gap-3  border-l-[1px] py-2 ">
+        <div className="w-full flex items-center gap-3  border-l-[1px] border-gray-400 py-2 ">
           <div
-            className="bg-yellow-400 h-20 rounded-r-xl  hover:border-l-2"
+            className={`bg-yellow-400 h-20 rounded-r-xl cursor-pointer hover:border-l-2 ${isHovered && 'border'}`}
             style={{ width: width }}
           ></div>
-          <span>{voteCount}</span>
+          <span 
+            ref={ref}
+            className="cursor-pointer"
+            >{voteCount}</span>
         </div>
       </div>
     </div>

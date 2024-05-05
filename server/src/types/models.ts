@@ -29,7 +29,8 @@ export type CommentModel = {
 export type ChoiceModel = {
     choiceId?: number;
     pollId: number;
-    choiceName: string;   
+    choiceName: string;  
+    voteCount: number; 
     [key: number | string]: unknown;
 }
 

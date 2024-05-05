@@ -23,7 +23,6 @@ async function getVotes(req: Request, res: Response) {
         const voteIdParam = req.params.voteId;
 
         // if get vote by id
-        
         const vote = await Vote.findOne(parseInt(voteIdParam));
         res.status(200).json(response.onSuccess("Vote found", snakeToCamel(vote[0])));
 

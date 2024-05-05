@@ -1,17 +1,18 @@
 import { FormProp } from "./form.interface"
 import { InputField } from "../../Elements"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { PollType } from "../../../common/types"
 import { Head } from "../../Elements/Head"
 import { Button } from "../../Elements"
 import { TextArea } from "../../Elements"
+import { Calendar } from "../DatePicker"
 
 const initialPoll: PollType = {
   pollName: "",
   description: "",
   choices: [],
   createdAt: new Date().toISOString().slice(0, 19).replace("T", " "), 
-  expirationDate: new Date().toISOString().slice(0, 19).replace("T", " "), 
+  expirationDate: ""
 };
 
 
@@ -19,6 +20,12 @@ export const Form = ({handleSubmit}: FormProp) => {
 
   const [pollData, setPollData] = useState<PollType>(initialPoll);
   const [choiceInput, setChoiceInput] = useState<string>("");
+  const [showCalendar, setShowCalendar] = useState<boolean>(false);
+
+  const handleSelectDay = useCallback((date: Date) => {
+    const formattedDateString = date.toISOString().slice(0, 19).replace("T", " ");
+    setPollData((prevData) => ({...prevData, expirationDate: formattedDateString}));
+  }, []);
 
   const handleFormSubmit = (e: React.ChangeEvent<HTMLFormElement>) => { 
     e.preventDefault();
@@ -67,7 +74,7 @@ export const Form = ({handleSubmit}: FormProp) => {
     });
 };
 
-  return ( 
+  return (<>
     <form
     onKeyDown={handleFormKeyDown}
     className="w-full flex flex-col items-center gap-10 px-36 mt-12">
@@ -114,15 +121,22 @@ export const Form = ({handleSubmit}: FormProp) => {
             onKeyDown={handleEventKey}
           />
         </Head>
-
-
+          
+      
         <Head
         text="End Date"
-        className="w-full flex flex-col gap-3">
-          <InputField
-            value={""}
-            placeholder="Pick a date"
-            handleInputChange={() =>  ""}
+        className="w-full flex flex-col gap-3 relative">
+            {showCalendar && 
+            <div className="absolute bottom-10 z-10">
+              <Calendar 
+                handleSelectDay={handleSelectDay}
+                className="bg-black-400 border rounded-md border-gray-300" />
+            </div>}
+            <InputField
+              value={pollData.expirationDate?.toString() ?? ""}
+              placeholder="Select end date"
+              handleInputChange={handleChoiceInput}
+              onClick={() => setShowCalendar(!showCalendar)}
           />
         </Head>
 
@@ -133,5 +147,5 @@ export const Form = ({handleSubmit}: FormProp) => {
           Create
         </Button>
     </form>
-  )
+  </>)
 }

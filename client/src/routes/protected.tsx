@@ -3,5 +3,5 @@ import { VotePage } from "../pages/Vote"
 
 export const protectedRoutes = [
     {path: '/create', element: <CreatePollPage/>},
-    {path: '/vote', element: <VotePage/>}
+    {path: '/vote/:voteId', element: <VotePage/>}
 ]

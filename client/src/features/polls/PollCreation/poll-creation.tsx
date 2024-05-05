@@ -3,6 +3,7 @@ import { Form } from "../../../components/Form/CreatePollForm"
 import { useCreatePoll } from "../api/createPoll"
 import { useAuthContext } from "../../../hooks/useAuthContext";
 
+
 export const PollCreation = () => {
   const {mutate} = useCreatePoll();
   const {user} = useAuthContext();

@@ -16,7 +16,9 @@ export const Navbar = () => {
             </Icon>
         </Head>
         
-        <LoginBtn/>
+        <LoginBtn 
+          variant="btn-login-dark"
+          text="Login"/>
     </header>
   )
 }
