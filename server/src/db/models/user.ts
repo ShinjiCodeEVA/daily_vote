@@ -42,7 +42,7 @@ class User {
                 resolve(result);
 
             } catch(error) {
-                reject(error);
+                return reject(error);
             }
         })
     }
@@ -71,7 +71,7 @@ class User {
                 resolve(fields);
 
             } catch(error) {
-                reject(error);
+                return reject(error);
             }
         })
     }

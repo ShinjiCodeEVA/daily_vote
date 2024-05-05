@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Counter } from "../components/Counter"
 import { PollItem } from "../components/PollItem"
 import { ActiveCrums } from "../components/ActiveCrumbs";
@@ -8,24 +9,54 @@ import { fetchViewedPoll } from "../api/fetchViewedPoll";
 import { useEffect } from "react";
 import { ChoiceType, VoteType } from "../../../common/types";
 import { castVote } from "../api/castVote";
+import io from "socket.io-client"
+import { useQueryClient } from "@tanstack/react-query";
+const socket = io("http://localhost:3000")
 
 export const VotingPoll = () => {
 
-  const currentDate = new Date();
-  const targetDate = new Date(currentDate.setDate(currentDate.getDate() + 3));
   const {user} = useAuthContext();
   const {voteId} = useParams();
   const {data, refetch} = fetchViewedPoll(voteId?.toString() ?? "");
   const {mutate} = castVote();
-    
+  const queryClient = useQueryClient();
+  
   useEffect(() => {
     if (voteId) { 
       refetch();
     }
   }, [])
 
+  useEffect(() => {
+    const handleNewVote = async (data: any) => { 
+      console.log('new vote');
+      await queryClient.invalidateQueries({queryKey: ["viewed-poll"], exact: true})
+    };
+
+    socket.on("newVote", handleNewVote);
+
+    return () => {
+      socket.off('newVote', handleNewVote);
+    };
+  }, [socket]);
+
   const handleCastVote = (data: VoteType) => {
+    if (socket) { 
+      socket.emit('vote', data);
+      console.log('emitting')
+    }
     mutate(data);
+  }
+
+
+  const increaseVoteCount = (choiceId: number) => { 
+    if (data) {
+      data.choices.map((choice: ChoiceType) => {
+        if (choice.choiceId === choiceId && choice.voteCount) 
+            choice.voteCount + 1;
+        return choice;
+      })
+    }
   }
 
   return (

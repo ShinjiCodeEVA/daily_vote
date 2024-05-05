@@ -9,9 +9,9 @@ export const castVote = () => {
     
     return useMutation({
         mutationFn: (data: VoteType) => handleCastVote(data),
-        onSuccess: () => {
+        onSuccess: async (data) => {
             console.log('should invalidate')
-            queryClient.invalidateQueries({queryKey: ["viewed-poll"], exact: true,});
+            await queryClient.invalidateQueries({queryKey: ["viewed-poll"], exact: true,});
         }
     })
 } 
