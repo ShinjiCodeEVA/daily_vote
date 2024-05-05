@@ -6,7 +6,8 @@ import { useAuthContext } from "../../../hooks/useAuthContext";
 import { useParams } from "react-router-dom";
 import { fetchViewedPoll } from "../api/fetchViewedPoll";
 import { useEffect } from "react";
-import { ChoiceType } from "../../../common/types";
+import { ChoiceType, VoteType } from "../../../common/types";
+import { castVote } from "../api/castVote";
 
 export const VotingPoll = () => {
 
@@ -15,12 +16,17 @@ export const VotingPoll = () => {
   const {user} = useAuthContext();
   const {voteId} = useParams();
   const {data, refetch} = fetchViewedPoll(voteId?.toString() ?? "");
+  const {mutate} = castVote();
     
   useEffect(() => {
     if (voteId) { 
       refetch();
     }
   }, [])
+
+  const handleCastVote = (data: VoteType) => {
+    mutate(data);
+  }
 
   return (
     <div className="w-full mt-3">
@@ -40,6 +46,9 @@ export const VotingPoll = () => {
                   return (
                     <PollItem 
                       key={index}
+                      handleCastVote={handleCastVote}
+                      userId={user.userId ?? -1}
+                      pollId={data.pollId}
                       choiceId={choice.choiceId ?? -1}
                       voteCount={choice.voteCount ?? 0}
                       pollName={choice.choiceName}/>

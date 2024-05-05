@@ -26,3 +26,9 @@ export type ChoiceType = {
     voteCount?: number;
     [key: number | string]: unknown;
 }
+
+export type VoteType = {
+    userId: number;
+    pollId: number;
+    choiceId: number;
+}
