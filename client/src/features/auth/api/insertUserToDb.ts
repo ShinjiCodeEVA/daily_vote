@@ -9,8 +9,8 @@ const handleInsert = async (user: UserType) => await axios.post(`/api/user`, use
 export const insertUser = (callback: any) => {
     return useMutation({
         mutationFn: async (user: UserType) =>  await handleExist(user),
-        onSuccess: (user) => callback(user),
-        onError: (user: UserType) => handleInsert(user),
+        onSuccess: async (user) => await callback(user),
+        onError: async (user: UserType) => await handleInsert(user),
     })
 }
 

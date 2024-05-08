@@ -15,7 +15,7 @@ export default function vote(req: Request, res: Response): Promise<void> | undef
 /**
  * GET vote
  * GET votes
- * @param req
+ * @param req 
  * @param res 
  */
 async function getVotes(req: Request, res: Response) {

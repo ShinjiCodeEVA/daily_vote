@@ -21,7 +21,7 @@ export const PollItem = ({handleCastVote, userId, pollId, choiceId, voteCount, p
           className="w-full flex items-center gap-3  border-l-[1px] border-gray-400 py-2">
           <div
             className={`bg-yellow-400 h-20 rounded-r-xl cursor-pointer hover:border-l-2 ${isHovered && 'border'}`}
-            style={{ width: width }}
+            style={{ width: width }} 
           ></div>
           <span 
             ref={ref}

@@ -88,13 +88,13 @@ class Poll {
      * @returns ResultSetHeader
      */
     public static insert(poll: PollModel): Promise<void> {
-        return new Promise(async (resolve, reject) => { 
+        return new Promise(async (resolve, reject) => {  
             const db = await Database.getConnection();
 
             try {
                 const error = Poll.validate(poll);
                 if (error)
-                    reject(error);
+                    return reject(error);
 
                 const {userId, pollName, expirationDate, choices} = poll;
                 

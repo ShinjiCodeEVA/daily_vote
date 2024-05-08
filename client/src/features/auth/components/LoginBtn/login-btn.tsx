@@ -11,6 +11,8 @@ import { extractQuery } from "../../../../utils";
 import { insertUser } from "../../api/insertUserToDb";
 import { UserType } from "../../../../common/types";
 import { AxiosResponse } from "axios";
+import { NavOption } from "../../../../components/Drawer";
+import { useDisclosure } from "../../../../hooks/useDisclosure";
 
 const loginWithGithub = () => {
   window.location.assign(GITHUB_AUTHORIZE_URL);
@@ -23,6 +25,7 @@ export const LoginBtn = ({variant, text}: LoginBtnProp) => {
   const {data: userData, refetch} = fetchUserData();
   const {setUser} = useAuthContext();
   const {mutate: userInsertToDb} = insertUser(mutationCallback);
+  const {isOpen, toggle} = useDisclosure();
 
   function mutationCallback(newUser: AxiosResponse) {
     setUser((prevUser: UserType | null) => {
@@ -70,9 +73,18 @@ export const LoginBtn = ({variant, text}: LoginBtnProp) => {
 
   return (
     <>{userData ? 
-    <Avatar 
-      avatar_url={userData.avatar_url}
-      className="w-[50px] h-[50px] rounded-full border-2 border-green-400"/> : 
+    <div
+    className="relative">
+      <Avatar
+        avatar_url={userData.avatar_url}
+        className="w-[50px] h-[50px] rounded-full border-2 border-green-400 cursor-pointer"
+        onClick={() => {toggle(), console.log('d')}}/>
+        { isOpen && 
+        <div
+        className="absolute right-1 mt-5 z-[99] bg-black-400">
+          <NavOption/>
+        </div>}
+    </div>: 
     <Button 
       onClick={loginWithGithub}
       variant={variant}
